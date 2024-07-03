@@ -38,13 +38,18 @@ Configuration
     - This class is used to redirect to different page based on roles after login successfully
 
 
-There are 3 API Controllers. APIs
-1. AdminController - This controller contains APIs regarding admin.
+There are 3 Controllers and 2 API controllers
+API Cpntroller
+1. AdminApiController - This controller contains APIs regarding admin.
     - user can find APIs to create new user, delete user or find user by email or the user id
     - the APIs are mainly being used for admin to maintain the User list.
-2. UsersController - This controller contains APIs regarding user.
+2. UsersApiController - This controller contains APIs regarding user.
     - user can find APIs to view user details.
-3. HomeController - This controller contains APIs for login page and user denied page.
+
+Web Controller
+1. AdminController - This controller contains views for admin dashboard page, create user page and view user details page.
+2. UserController - This controller contains views for user home page only.
+3. HomeController - This controller contains views for login page and user denied page.
 
 Model
 1. There are one entity, one dto and one mapper
