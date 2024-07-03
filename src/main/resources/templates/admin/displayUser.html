@@ -5,42 +5,62 @@
     <title>Result</title>
     <link rel="stylesheet"
           href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css"
-          th:href="@{/css/display_form.css}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+
+
+        $(document).ready(function(){
+            var userId = $("#userIdHidden").text();
+            $.ajax({
+               url: "http://localhost:8080/api/admin/getUserById/"+userId,
+               type: 'GET',
+           })
+           .done(function(data){
+               append_json_data(data)
+           });
+
+           function append_json_data(data){
+                $("#userId").text(data.userId);
+                $("#firstName").text(data.firstName);
+                $("#lastName").text(data.lastName);
+                $("#mobileNum").text(data.mobileNum);
+                $("#email").text(data.email);
+           }
+    });
+
+    </script>
 </head>
 <body>
 <div style="padding-left: 30px;padding-right:30px;">
     <h2>User Details</h2>
     <a th:href="@{/logout}">Logout</a>
     <div></div>
-    <a th:if="${isCreateUser}" th:href="@{/admin/createUser}">Add
-        new employee
-    </a>
     <div></div>
     <a th:href="@{/admin/dashboard}">Back to Dashboard
     </a>
-    <br/><br/>
+    <br/>
     <table>
         <tbody>
+        <p id="userIdHidden" th:text="${usersId}" style="visibility:hidden"></p>
         <tr>
             <td><strong>User Id:</strong></td>
-            <td><span th:text="${usersDTO.userId}"></span></td>
+            <td><span id="userId"></span></td>
         </tr>
         <tr>
             <td><strong>First Name:</strong></td>
-            <td><span th:text="${usersDTO.firstName}"></span></td>
+            <td><span id="firstName"></span></td>
         </tr>
         <tr>
             <td><strong>Last Name:</strong></td>
-            <td><span th:text="${usersDTO.lastName}"></span></td>
+            <td><span id="lastName"></span></td>
         </tr>
         <tr>
             <td><strong>Mobile Number:</strong></td>
-            <td><span th:text="${usersDTO.mobileNum}"></span></td>
+            <td><span id="mobileNum"></span></td>
         </tr>
         <tr>
             <td><strong>Email:</strong></td>
-            <td><span th:text="${usersDTO.email}"></span></td>
+            <td><span id="email"></span></td>
         </tr>
         </tbody>
     </table>

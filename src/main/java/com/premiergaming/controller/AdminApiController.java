@@ -1,6 +1,5 @@
 package com.premiergaming.controller;
 
-import com.premiergaming.model.Error;
 import com.premiergaming.model.dto.UsersDTO;
 import com.premiergaming.service.interfaces.IUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -16,20 +14,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/")
-public class AdminController {
+public class AdminApiController {
     @Autowired
     IUsersService usersService;
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    @GetMapping("/createUser")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ModelAndView createUser() {
-        ModelAndView mav = new ModelAndView("admin/createUser");
-        UsersDTO user = new UsersDTO();
-        mav.addObject(user);
-        return mav;
-    }
+
 
     @PostMapping("/createNewUser")
     @PreAuthorize("hasAuthority('ADMIN')")
@@ -37,7 +28,7 @@ public class AdminController {
         String errorMessage = "";
         if (user.getFirstName().isBlank() || user.getLastName().isBlank() || user.getEmail().isBlank()
                 || user.getPassword().isBlank()  || user.getRole().isBlank()) {
-            return new ResponseEntity<String>("Please fill in required fields", HttpStatus.OK);
+            return new ResponseEntity<String>("Please fill in required fields", HttpStatus.BAD_REQUEST);
         }else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             UsersDTO existingUser = usersService.getUserByEmail(user.getEmail());
@@ -53,7 +44,7 @@ public class AdminController {
         return null;
     }
 
-    @GetMapping("/view/{userId}")
+    @GetMapping("/getUserById/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<UsersDTO> getUserByUserId(@PathVariable("userId") Integer userId) {
         UsersDTO user = usersService.getByUserId(userId);
@@ -71,7 +62,7 @@ public class AdminController {
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/deleteUserByUserId/{userId}")
+    @GetMapping("/delete/{userId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> deleteUserByUserId(@PathVariable("userId") Integer userId) {
         UsersDTO user = usersService.getByUserId(userId);
@@ -83,6 +74,8 @@ public class AdminController {
 
         return new ResponseEntity<>("User deleted successfully.", HttpStatus.OK);
     }
+
+
 
 
 

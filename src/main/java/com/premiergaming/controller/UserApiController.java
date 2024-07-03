@@ -11,18 +11,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-@Controller
-@RequestMapping("api/user/")
-public class UserController {
+@RestController
+@RequestMapping("/api/user/")
+public class UserApiController {
 
     @Autowired
     IUsersService usersService;
 
     @GetMapping("/view")
     @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('USER')")
-    public ResponseEntity<UsersDTO> getUser() {
+    public ResponseEntity<UsersDTO> findUser() {
         UsersDTO users = usersService.getUserByEmail(loggedInUserDetails().getUsername());
         if (users != null) {
             return new ResponseEntity<UsersDTO>(users, HttpStatus.OK);

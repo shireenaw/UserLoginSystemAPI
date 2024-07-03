@@ -5,6 +5,42 @@
     <title>Create New User</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('.createForm').submit(function (e) {
+          e.preventDefault();
+          const data = {
+            firstName:$('#firstName').val(),
+            lastName:$('#lastName').val(),
+            mobileNum: $('#mobileNum').val(),
+            email: $('#email').val(),
+            role: $('#role').val(),
+            password: $('#pass').val()
+          };
+
+          $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/api/admin/createNewUser',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+          })
+            .done((data) => {
+              append_json_data(data);
+            })
+            .fail((err) => {
+              console.error(err);
+              $(".text-info").text(err.responseText);
+            });
+        });
+
+                   function append_json_data(data){
+                           $(".text-info").text(data);
+                           $(".createForm").trigger('reset')
+                       }
+    });
+
+    </script>
 
 </head>
 <body>
@@ -15,40 +51,40 @@
         <div class="row">
             <div class="col-md-8 mx-auto">
                 <h2>User Registration</h2>
-                <form th:action="@{/admin/createUser/success}" th:object="${usersDTO}" method="post">
-                    <div th:if="${error != null}">
-                        <p class="text-danger" th:text="${error.errorMessage}"></p>
+                <form class="createForm">
+                    <div>
+                        <p class="text-info"></p>
                     </div>
                     <div class="form-row">
                         <div class="col-md-6 form-group">
                             <label>First Name</label>
-                            <input type="text" class="form-control" th:field="*{firstName}">
+                            <input type="text" class="form-control" id="firstName">
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Last Name</label>
-                            <input type="text" class="form-control" th:field="*{lastName}">
+                            <input type="text" class="form-control" id="lastName">
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Role</label>
-                            <select class="form-control" th:field="*{role}">
+                            <select class="form-control" id="role">
                                 <option value="USER">USER</option>
                                 <option value="ADMIN">ADMIN</option>
                             </select>
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Mobile Number</label>
-                            <input type="number" step="any" class="form-control" th:field="*{mobileNum}">
+                            <input type="number" step="any" class="form-control" id="mobileNum">
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Email</label>
-                            <input type="email" step="any" class="form-control" th:field="*{email}">
+                            <input type="email" step="any" class="form-control"  id="email">
                         </div>
                         <div class="col-md-6 form-group">
                             <label>Password</label>
-                            <input type="password" step="any" class="form-control" th:field="*{password}">
+                            <input type="password" step="any" class="form-control" id="pass">
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block mt-3">Save</button>
+                    <button id="saveBtn" type="submit" class="btn btn-primary btn-block mt-3">Save</button>
                 </form>
                 <a th:href="@{/admin/dashboard}"><button class="btn btn-primary btn-block mt-3">Back to Dashboard</button></a>
             </div>

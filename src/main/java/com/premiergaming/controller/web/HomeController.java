@@ -1,4 +1,4 @@
-package com.premiergaming.controller;
+package com.premiergaming.controller.web;
 import com.premiergaming.service.interfaces.IUsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
