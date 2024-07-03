@@ -15,9 +15,6 @@ public class AdminController {
     @GetMapping("/createUser")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ModelAndView createUser() {
-//        ModelAndView mav = new ModelAndView("admin/createUser");
-//        UsersDTO user = new UsersDTO();
-//        mav.addObject(user);
         return new ModelAndView("admin/createUser");
     }
     @GetMapping("/dashboard")
